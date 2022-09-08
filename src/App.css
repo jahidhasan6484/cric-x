@@ -1,17 +1,99 @@
 @import url('https://fonts.googleapis.com/css2?family=Jost&display=swap');
+@import "react-alice-carousel/lib/alice-carousel.css";
 
 * {
   font-family: 'Jost', sans-serif;
 }
 
+.body {
+  background: #E3E6E3;
+}
+
 .match_card{
-  border: 1px solid black;
-  margin-bottom: 5px;
+  border: 1px solid #E3E6E3;
+  margin: 2px;
+  padding: 10px;
+  font-size: 0.9rem;
+  line-height: 0.8;
+}
+
+.result {
+  font-size: 0.8rem;
+  color: orangered;
+}
+
+.team_name {
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.title {
+  color: #009270;
+  font-weight: 700;
+  letter-spacing: 1px;
 }
 
 .news_card {
   padding: 10px;
-  background: rgb(226, 226, 226);
+  border: 1px solid #E3E6E3;
   margin: 2px;
   border-radius: 5px;
+  font-size: 0.9rem;
+  color: #616161;;
+}
+
+.content {
+  background: #fff;
+  padding-top: 2rem;
+  padding-bottom: 5rem;
+}
+
+.header {
+  background: #009270 !important;
+  padding: 10px 20px;
+  border-radius: 5px;
+}
+
+.logo{
+  color: #fff;
+  text-decoration: none;
+  letter-spacing: 3px;
+  font-size: 1.1rem;
+}
+
+.logo:hover{
+  color: #fff;
+}
+
+.nav-link {
+  color: #fff;
+  letter-spacing: 1px;
+  font-size: 0.9rem;
+}
+
+.spinner{
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.spinner img {
+  width: 150px;
+}
+
+.menu {
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  color: #fff;
+}
+
+.navbar-toggler,
+.navbar-toggler:focus,
+.navbar-toggler:active,
+.navbar-toggler-icon:focus {
+  outline: none;
+  border: none;
+  box-shadow: none;
 }

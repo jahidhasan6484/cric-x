@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import spinner from '../../images/spinner.gif';
+
 const axios = require("axios");
 
 const options = {
@@ -27,24 +29,13 @@ const Header = () => {
 
     const [allNews, setAllNews] = useState();
 
-    const filterResult = () => {
-        console.log("FROM FILTER: ",sessionStorage.getItem('type'), sessionStorage.getItem('isInternational'))
-    
-        if (sessionStorage.getItem('isInternational') == "domestic") {
-            const result =
-                allData.filter(match =>
-                    match.format == sessionStorage.getItem('type') &&
-                    match.internationalClassId == null
-                );
-            setData(result)
-        } else if (sessionStorage.getItem('isInternational') == "international") {
-            const result =
-                allData.filter(match =>
-                    match.format == sessionStorage.getItem('type') &&
-                    match.internationalClassId !== null
-                );
-            setData(result)
-        }
+    const filterResult = (type) => {
+        const result =
+            allData.filter(match =>
+                match.format === type &&
+                match.internationalClassId !== null
+            );
+        setData(result)
     }
 
     useEffect(() => {
@@ -69,106 +60,88 @@ const Header = () => {
         });
     }, []);
 
-    const handleLoading = (type, isInternational) => {
-        sessionStorage.setItem('type', type);
-        sessionStorage.setItem('isInternational', isInternational);
-        filterResult()
+    const home = () => {
+        setData("")
     }
 
     return (
-        <>
-            <nav class="navbar navbar-expand-lg bg-light">
-                <div class="container">
-                    <a class="navbar-brand" href="#">Cric X</a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
+        <div className="body">
+            <nav class="navbar navbar-expand-lg">
+                <div class="container header">
+                    <a class="logo" href="#" onClick={home}>CricX</a>
+                    <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="menu">menu</span>
+                            </button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
                         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    T20
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#" onClick={() => handleLoading("T20", "international")}>International</a></li>
-                                    <li><a class="dropdown-item" href="#" onClick={() => handleLoading("T20", "domestic")}>Domestic</a></li>
-                                </ul>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" onClick={home}>Home</a>
                             </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    ODI
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#" onClick={() => handleLoading("ODI", "international")}>International</a></li>
-                                    <li><a class="dropdown-item" href="#" onClick={() => handleLoading("ODI", "domestic")}>Domestic</a></li>
-                                </ul>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" onClick={() => filterResult("T20")}>T20</a>
                             </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Test
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#" onClick={() => handleLoading("TEST", "international")}>International</a></li>
-                                    <li><a class="dropdown-item" href="#" onClick={() => handleLoading("TEST", "domestic")}>Domestic</a></li>
-                                </ul>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" onClick={() => filterResult("ODI")}>ODI</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" onClick={() => filterResult("TEST")}>Test</a>
                             </li>
                         </ul>
                     </div>
                 </div>
             </nav>
 
-            <div className="container">
-                <div className="row">
-                    <h1>{data?.length}</h1>
-
-                
-                    {data ? data?.map((match) => {
-                        return (
-                            <div className="col-md-3 match_card">
-                                <p>Format: {match.format}</p>
-                                <p>{match.ground?.smallName}</p>
-                                <p>{match.series?.slug}</p>
-                                <p>{match.title}</p>
-                                <p>{match.statusText}</p>
-                                <p>{match.teams[0]?.team?.name}: {match.teams[0]?.score} {match.teams[0]?.scoreInfo}</p>
-                                <p>{match.teams[1]?.team?.name}: {match.teams[1]?.score} {match.teams[1]?.scoreInfo}</p>
-                            </div>
-                        )
-                    })
-                        :
-                        initialData?.map((match) => {
+            {
+                ((data || initialData) && allNews) ? <div className="container content">
+                    <div className="row">
+                        <h6 className="title">FEATURED MATCHES</h6>
+                        {data ? data?.map((match) => {
                             return (
-                                <div className="col-md-3 match_card">
-                                    <p>Format: {match.format}</p>
-                                    <p>{match.ground?.smallName}</p>
-                                    <p>{match.series?.slug}</p>
-                                    <p>{match.title}</p>
-                                    <p>{match.statusText}</p>
-                                    <p>{match.teams[0]?.team?.name}: {match.teams[0]?.score} {match.teams[0]?.scoreInfo}</p>
-                                    <p>{match.teams[1]?.team?.name}: {match.teams[1]?.score} {match.teams[1]?.scoreInfo}</p>
-                                </div>
-                            )
-                        })
-                    }
-                </div>
-
-                <h1>{allNews?.length}</h1>
-                <div className="row">
-                    {
-                        allNews?.map((news) => {
-                            return (
-                                <div className="col-md-4">
-                                    <div className="news_card">
-                                        <p>{news.title}</p>
+                                <div className="col-md-3">
+                                    <div className="match_card">
+                                        <p><span className="team_name">{match.teams[0]?.team?.name}</span> {match.teams[0]?.score} {match.teams[0]?.scoreInfo}</p>
+                                        <p><span className="team_name">{match.teams[1]?.team?.name}</span> {match.teams[1]?.score} {match.teams[1]?.scoreInfo}</p>
+                                        <p className="result">{match.statusText}</p>
                                     </div>
                                 </div>
                             )
                         })
-                    }
-                </div>
-            </div>
-        </>
+                            :
+                            initialData?.map((match) => {
+                                return (
+                                    <div className="col-md-3">
+                                        <div className="match_card">
+                                            <p>{match.teams[0]?.team?.name} {match.teams[0]?.score} {match.teams[0]?.scoreInfo}</p>
+                                            <p>{match.teams[1]?.team?.name} {match.teams[1]?.score} {match.teams[1]?.scoreInfo}</p>
+                                            <p className="result">{match.statusText}</p>
+                                        </div>
+                                    </div>
+                                )
+                            })
+                        }
+                    </div>
+                    <div className="row">
+                        <h6 className="title mt-5">LATEST NEWS</h6>
+                        {
+                            allNews?.map((news) => {
+                                return (
+                                    <div className="col-md-3">
+                                        <div className="news_card">
+                                            <p>{news.title}</p>
+                                        </div>
+                                    </div>
+                                )
+                            })
+                        }
+                    </div>
+                </div> :
+                    <div className="container spinner">
+                        <img src={spinner} alt="spinner"></img>
+                    </div>
+            }
+
+        </div>
     )
 }
 
